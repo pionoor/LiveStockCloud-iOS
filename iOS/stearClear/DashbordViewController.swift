@@ -56,6 +56,7 @@ class DashbordTableViewController: UIViewController, UITableViewDataSource, UITa
             let viewAnimal: AnimalViewController = segue.destinationViewController as! AnimalViewController
             if let animalIndex = animalsTableView.indexPathForSelectedRow?.row {
                 viewAnimal.animal = self.user.animals[animalIndex]
+                viewAnimal.token = self.user.token
             }
         case "login": break
             

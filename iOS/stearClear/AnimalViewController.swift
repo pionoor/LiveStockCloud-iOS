@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import Alamofire
 
 class AnimalViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var animal:Animal = Animal()
-    
+    var animal: Animal = Animal()
+    var token: String = String()
     @IBOutlet weak var typeAnimalTextField: UITextField!
     @IBOutlet weak var breedAnimalTextField: UITextField!
     @IBOutlet weak var animalNameTextField: UITextField!
@@ -75,10 +76,41 @@ class AnimalViewController:  UIViewController, UITableViewDataSource, UITableVie
     
     
     
+    func addWeighPost(){
+        
+        let parameters = [
+            "token":"\(token)",
+            "weight":"\(addNewWeightTextField!.text!)",
+            "date":"2015/10/10"
+        ]
+        
+        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.name)"
+        
+        Alamofire.request(.POST, url, parameters: parameters) .responseJSON { response in
+            print(response.result)   // result of response serialization
+            
+            if let JSON = response.result.value {
+                print(JSON)
+                if String(JSON["success"]!!) == "1"{
+                
+                }
+                else if String(JSON["success"]!!) == "0" {
+                    self.view.makeToast(message: "Wrong Username or Password!", duration: 1.0, position: "center")
+                    return
+                }
+                else{
+                    
+                }
+                //self.user.username = self.usernameTextField!.text
+            }
+        }
+    }
+
     @IBAction func AddNewWeight(sender: UIButton) {
         self.animal.weight[Int(addNewWeightTextField.text!)!] = " today!"
         addNewWeightTextField.text = ""
         //self.weightTableView.reloadData()
+        addWeighPost()
 
         
     }
