@@ -10,7 +10,8 @@ import UIKit
 import Alamofire
 
 class AddAnimalViewController: UIViewController {
-
+    
+    @IBOutlet weak var IDTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
     
     @IBOutlet weak var breedTextField: UITextField!
@@ -22,29 +23,38 @@ class AddAnimalViewController: UIViewController {
     var token = String()
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+   
     @IBAction func dismiss(sender: UIButton) {
         
         self.dismissViewControllerAnimated(true, completion: nil)
         
     }
     
+    @IBAction func add(sender: UIButton) {
+        addAnimal()
+    }
+    
     func addAnimal(){
         
         let parameters = [
+            "token":"\(token)",
             "name":"\(nameTextField!.text!)",
-            "breed":"\(breedTextField!.text!)"
+            "id":"\(IDTextField!.text!)",
+            "breed":"\(breedTextField!.text!)",
+            "type":"\(typeTextField!.text!)"
+            
         ]
         
-        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/authenticate"
+        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/animals"
         
         Alamofire.request(.POST, url, parameters: parameters) .responseJSON { response in
             print(response.result)   // result of response serialization
@@ -52,12 +62,10 @@ class AddAnimalViewController: UIViewController {
             if let JSON = response.result.value {
                 print(JSON)
                 if String(JSON["success"]!!) == "1"{
-                    self.token = String(JSON["token"]!!)
-                    dispatch_async(dispatch_get_main_queue()){
-                        
-                        self.performSegueWithIdentifier("tableview dashboard", sender: self)
-                        
-                    }
+                    self.view.makeToast(message: "Animal Added!", duration: 1.0, position: "center")
+                    
+                  self.dismissViewControllerAnimated(true, completion: nil) 
+                    
                 }
                 else {
                     self.view.makeToast(message: "Wrong Username or Password!", duration: 1.0, position: "center")
@@ -67,16 +75,16 @@ class AddAnimalViewController: UIViewController {
             }
         }
     }
-
-
+    
+    
     /*
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using segue.destinationViewController.
+    // Pass the selected object to the new view controller.
     }
     */
-
+    
 }
