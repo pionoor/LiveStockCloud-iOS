@@ -62,13 +62,14 @@ class AddAnimalViewController: UIViewController {
             if let JSON = response.result.value {
                 print(JSON)
                 if String(JSON["success"]!!) == "1"{
-                    self.view.makeToast(message: "Animal Added!", duration: 1.0, position: "center")
-                    
-                  self.dismissViewControllerAnimated(true, completion: nil) 
-                    
+                    self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")
+                    dispatch_async(dispatch_get_main_queue()){
+
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                    }
                 }
                 else {
-                    self.view.makeToast(message: "Wrong Username or Password!", duration: 1.0, position: "center")
+                    self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")
                     return
                 }
                 //self.user.username = self.usernameTextField!.text

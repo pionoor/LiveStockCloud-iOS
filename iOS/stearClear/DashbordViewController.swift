@@ -14,23 +14,25 @@ class DashbordTableViewController: UIViewController, UITableViewDataSource, UITa
     var user = User()
     
     
-    @IBOutlet var animalsTableView: UITableView! =  UITableView()
+    @IBOutlet weak var nameLable: UILabel!
+    
+    @IBOutlet weak var animalsTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        nameLable.text = String("\(user.fname) \(user.lname)")
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         //self.animalsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        //syncUserData()
         
     }
     
     override func viewWillAppear(animated: Bool) {
-        
         super.viewWillAppear(true)
-        //syncUserData()
+        syncUserData()
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -38,7 +40,7 @@ class DashbordTableViewController: UIViewController, UITableViewDataSource, UITa
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func cancelToPlayersViewController(segue:UIStoryboardSegue) {
+    @IBAction func cancelToViewController(segue:UIStoryboardSegue) {
     }
     
     @IBAction func savePlayerDetail(segue:UIStoryboardSegue) {
@@ -52,7 +54,7 @@ class DashbordTableViewController: UIViewController, UITableViewDataSource, UITa
             let addAnimalView: AddAnimalViewController = segue.destinationViewController as! AddAnimalViewController
             addAnimalView.token = user.token
             
-        case "viewAnimal":
+        case "weights":
             let viewAnimal: AnimalViewController = segue.destinationViewController as! AnimalViewController
             if let animalIndex = animalsTableView.indexPathForSelectedRow?.row {
                 viewAnimal.animal = self.user.animals[animalIndex]
@@ -76,6 +78,7 @@ class DashbordTableViewController: UIViewController, UITableViewDataSource, UITa
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+  
         return user.animals.count
     }
     
@@ -89,6 +92,8 @@ class DashbordTableViewController: UIViewController, UITableViewDataSource, UITa
         return cell
     }
     
+    
+    
     func syncUserData(){
         let parameters = [
             "token":"\(self.user.token)"
@@ -99,6 +104,10 @@ class DashbordTableViewController: UIViewController, UITableViewDataSource, UITa
             print(response.result)   // result of response serialization
             
             if let JSON = response.result.value {
+                if JSON.count == 0 {
+                    
+                    return }
+
                 self.user.animals.removeAll()
                 self.user.addAnimal(JSON.count)
                 print(JSON[0])
@@ -109,7 +118,8 @@ class DashbordTableViewController: UIViewController, UITableViewDataSource, UITa
                         self.user.animals[i].type = String(JSON[i]["type"]!!)
                         self.user.animals[i].managedBy = String(JSON[i]["managedBy"]!!)
                         self.user.animals[i].date = Int(String(JSON[i]["type"]!!))
-                        
+                        self.animalsTableView.reloadData()
+
                     }
                 }
             }

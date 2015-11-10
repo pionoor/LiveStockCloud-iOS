@@ -10,11 +10,11 @@ import Alamofire
 import UIKit
 
 class LoginViewController: UIViewController {
-   
+    
     @IBOutlet weak var newUserbutton = UIButton()
     @IBOutlet weak var usernameTextField = UITextField()
     @IBOutlet weak var passwordTextField = UITextField()
-
+    
     @IBOutlet weak var singInButton = UIButton()
     
     let url = NSURL(string: "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/authenticate")
@@ -33,23 +33,23 @@ class LoginViewController: UIViewController {
         passwordTextField!.leftViewMode = UITextFieldViewMode.Always
     }
     
-        
+    
     
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         switch segue.identifier!{
+            
         case "signUp":
             
-            let dashboard: RegistrationViewController = segue.destinationViewController as! RegistrationViewController
+            let signUp: RegistrationViewController = segue.destinationViewController as! RegistrationViewController
             //dashboard.user = user
-      
             
-        case "tableview dashboard":
+            
+        case "dashboard":
             let dashboard: DashbordTableViewController = segue.destinationViewController as! DashbordTableViewController
             dashboard.user = self.user
-            dashboard.syncUserData()
             
             
         default:
@@ -59,7 +59,7 @@ class LoginViewController: UIViewController {
         
     }
     
-    @IBAction func signIn(sender: AnyObject) {
+    @IBAction func signIn(sender: UIButton) {
         authenticate()
     }
     
@@ -77,21 +77,23 @@ class LoginViewController: UIViewController {
             print(response.result)   // result of response serialization
             
             if let JSON = response.result.value {
+                if JSON.count == 0 {
+                    self.performSegueWithIdentifier("dashboard", sender: self)
+                    
+                    return }
                 self.user.addAnimal(JSON.count)
                 print(JSON[0])
-                 dispatch_async(dispatch_get_main_queue()){
-                for i in 0..<JSON.count{
-                    self.user.animals[i].name = String(JSON[i]["name"]!!)
-                    self.user.animals[i].breed = String(JSON[i]["breed"]!!)
-                    self.user.animals[i].type = String(JSON[i]["type"]!!)
-                    self.user.animals[i].managedBy = String(JSON[i]["managedBy"]!!)
-                    self.user.animals[i].date = Int(String(JSON[i]["type"]!!))
-                    
-                    print(JSON)
-                    
-                   
+                dispatch_async(dispatch_get_main_queue()){
+                    for i in 0..<JSON.count{
+                        self.user.animals[i].name = String(JSON[i]["name"]!!)
+                        self.user.animals[i].breed = String(JSON[i]["breed"]!!)
+                        self.user.animals[i].type = String(JSON[i]["type"]!!)
+                        self.user.animals[i].managedBy = String(JSON[i]["managedBy"]!!)
+                        self.user.animals[i].date = Int(String(JSON[i]["type"]!!))
                         
-                        self.performSegueWithIdentifier("tableview dashboard", sender: self)
+                        
+                        
+                        self.performSegueWithIdentifier("dashboard", sender: self)
                     }
                 }
             }
@@ -114,7 +116,7 @@ class LoginViewController: UIViewController {
             if let JSON = response.result.value {
                 print(JSON)
                 if String(JSON["success"]!!) == "1"{
-                     self.user.username = String(JSON["username"]!!)
+                    self.user.username = String(JSON["username"]!!)
                     self.user.email = String(JSON["email"]!!)
                     self.user.fname = String(JSON["fname"]!!)
                     self.user.lname = String(JSON["lname"]!!)
