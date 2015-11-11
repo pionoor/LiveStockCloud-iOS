@@ -46,17 +46,13 @@ class LoginViewController: UIViewController {
             let signUp: RegistrationViewController = segue.destinationViewController as! RegistrationViewController
             //dashboard.user = user
             
-            
         case "dashboard":
             let dashboard: DashbordTableViewController = segue.destinationViewController as! DashbordTableViewController
             dashboard.user = self.user
             
-            
         default:
             break
         }
-        
-        
     }
     
     @IBAction func signIn(sender: UIButton) {

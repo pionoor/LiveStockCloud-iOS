@@ -55,10 +55,11 @@ class DashbordTableViewController: UIViewController, UITableViewDataSource, UITa
             addAnimalView.token = user.token
             
         case "weights":
-            let viewAnimal: AnimalViewController = segue.destinationViewController as! AnimalViewController
+            let weighsView: WeightViewController = segue.destinationViewController as! WeightViewController
             if let animalIndex = animalsTableView.indexPathForSelectedRow?.row {
-                viewAnimal.animal = self.user.animals[animalIndex]
-                viewAnimal.token = self.user.token
+                weighsView.animal = self.user.animals[animalIndex]
+                weighsView.token = self.user.token
+                weighsView.animal.weight[100] = "today"
             }
         case "login": break
             

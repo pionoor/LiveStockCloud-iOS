@@ -1,11 +1,7 @@
 //
 //  AnimalViewController.swift
 //  stearClear
-//
-//  Created by Noor Thabit on 10/25/15.
-//  Copyright © 2015 4H. All rights reserved.
-//
-
+//  
 import UIKit
 import Alamofire
 
@@ -13,9 +9,9 @@ class WeightViewController:  UIViewController, UITableViewDataSource, UITableVie
     
     var animal: Animal = Animal()
     var token: String = String()
-    @IBOutlet weak var typeAnimalTextField: UITextField!
-    @IBOutlet weak var breedAnimalTextField: UITextField!
-    @IBOutlet weak var animalNameTextField: UITextField!
+    @IBOutlet weak var typeAnimalTextField: UILabel!
+    @IBOutlet weak var breedAnimalTextField: UILabel!
+    @IBOutlet weak var animalNameTextField: UILabel!
    
     @IBOutlet var addNewWeightTextField: UITextField! = UITextField()
     @IBOutlet var weightTableView: UITableView! =  UITableView()
@@ -23,6 +19,7 @@ class WeightViewController:  UIViewController, UITableViewDataSource, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         updateTextFields()
+        syncWeights()
         // Do any additional setup after loading the view.
         
         //addNewWeightTextField = UITextField()
@@ -73,11 +70,43 @@ class WeightViewController:  UIViewController, UITableViewDataSource, UITableVie
         default:
             break
         }
-        
-        
     }
     
     
+    func syncWeights(){
+        let parameters = [
+            "token":"\(token)",
+        ]
+        
+        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.name)"
+        
+        Alamofire.request(.GET, url, parameters: parameters) .responseJSON { response in
+            print(response.result)   // result of response serialization
+            
+            if let JSON = response.result.value {
+                print(JSON)
+                
+                for i in 0..<JSON.count{
+                    let weight = Int(String(JSON[i]["weight"]!!))
+                    self.animal.weight[weight!] = String(JSON[i]["date"]!!)
+                }
+                self.weightTableView.reloadData()
+
+                
+                /*if String(JSON["success"]!!) == "1"{
+                    self.weightTableView.reloadData()
+                    
+                }
+                else if String(JSON["success"]!!) == "0" {
+                    self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")
+                    return
+                }
+                else{
+                    
+                }*/
+            }
+        }
+    }
     
     func addWeighPost(){
         

@@ -12,7 +12,6 @@
 		210ECF4A1BDD792C00BF3980 /* WeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210ECF491BDD792C00BF3980 /* WeightViewController.swift */; };
 		211205531BDC2CBF001D037B /* DashbordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211205521BDC2CBF001D037B /* DashbordViewController.swift */; };
 		211205551BDC87FC001D037B /* AddAnimalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211205541BDC87FC001D037B /* AddAnimalViewController.swift */; };
-		212509681BF00AF80057A754 /* WeightTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212509671BF00AF80057A754 /* WeightTableViewController.swift */; };
 		2126BBE71BCB5696007E726B /* toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2126BBE61BCB5696007E726B /* toast.swift */; };
 		2126BBE81BCB5696007E726B /* toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2126BBE61BCB5696007E726B /* toast.swift */; };
 		2126BBE91BCB5696007E726B /* toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2126BBE61BCB5696007E726B /* toast.swift */; };
@@ -51,7 +50,6 @@
 		210ECF491BDD792C00BF3980 /* WeightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeightViewController.swift; sourceTree = "<group>"; };
 		211205521BDC2CBF001D037B /* DashbordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashbordViewController.swift; sourceTree = "<group>"; };
 		211205541BDC87FC001D037B /* AddAnimalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAnimalViewController.swift; sourceTree = "<group>"; };
-		212509671BF00AF80057A754 /* WeightTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeightTableViewController.swift; sourceTree = "<group>"; };
 		2126BBE61BCB5696007E726B /* toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = toast.swift; sourceTree = "<group>"; };
 		21796C631BC1EE47006DBDAD /* UserDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserDataModel.swift; path = stearClear/UserDataModel.swift; sourceTree = "<group>"; };
 		2186227C1BDAD470001BF9DE /* Registration ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registration ViewController.swift"; sourceTree = "<group>"; };
@@ -134,7 +132,6 @@
 		219632751BC1E6A30025DB78 /* stearClear */ = {
 			isa = PBXGroup;
 			children = (
-				212509671BF00AF80057A754 /* WeightTableViewController.swift */,
 				2186227C1BDAD470001BF9DE /* Registration ViewController.swift */,
 				211205541BDC87FC001D037B /* AddAnimalViewController.swift */,
 				210ECF491BDD792C00BF3980 /* WeightViewController.swift */,
@@ -375,7 +372,6 @@
 				21796C641BC1EE47006DBDAD /* UserDataModel.swift in Sources */,
 				2186227D1BDAD470001BF9DE /* Registration ViewController.swift in Sources */,
 				219632771BC1E6A30025DB78 /* AppDelegate.swift in Sources */,
-				212509681BF00AF80057A754 /* WeightTableViewController.swift in Sources */,
 				211205531BDC2CBF001D037B /* DashbordViewController.swift in Sources */,
 				211205551BDC87FC001D037B /* AddAnimalViewController.swift in Sources */,
 			);
