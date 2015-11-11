@@ -5,7 +5,7 @@
 import UIKit
 import Alamofire
 
-class WeightViewController:  UIViewController, UITableViewDataSource, UITableViewDelegate {
+class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var animal: Animal = Animal()
     var token: String = String()
@@ -20,6 +20,7 @@ class WeightViewController:  UIViewController, UITableViewDataSource, UITableVie
         super.viewDidLoad()
         updateTextFields()
         syncWeights()
+
         // Do any additional setup after loading the view.
         
         //addNewWeightTextField = UITextField()
@@ -53,7 +54,7 @@ class WeightViewController:  UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Weight Cell", forIndexPath: indexPath)
         let index = animal.weight.startIndex.advancedBy(indexPath.row)
-        cell.detailTextLabel?.text = animal.weight[0]
+        cell.t = animal.weight[0]
         cell.textLabel?.text = animal.weight[0]
         return cell
         
@@ -64,7 +65,7 @@ class WeightViewController:  UIViewController, UITableViewDataSource, UITableVie
         
         switch segue.identifier!{
         case "dashboard":
-            let dashboard: DashbordTableViewController = segue.destinationViewController as! DashbordTableViewController
+            let dashboard: UserDashbordVC = segue.destinationViewController as! UserDashbordVC
          //dashboard.syncUserData()
             
         default:

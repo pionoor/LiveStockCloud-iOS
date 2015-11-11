@@ -9,15 +9,13 @@
 import Alamofire
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginVC: UIViewController {
     
     @IBOutlet weak var newUserbutton = UIButton()
     @IBOutlet weak var usernameTextField = UITextField()
     @IBOutlet weak var passwordTextField = UITextField()
     
     @IBOutlet weak var singInButton = UIButton()
-    
-    let url = NSURL(string: "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/authenticate")
     
     var user: User = User()
     
@@ -43,11 +41,11 @@ class LoginViewController: UIViewController {
             
         case "signUp":
             
-            let signUp: RegistrationViewController = segue.destinationViewController as! RegistrationViewController
+            let signUp: RegistrationVC = segue.destinationViewController as! RegistrationVC
             //dashboard.user = user
             
         case "dashboard":
-            let dashboard: DashbordTableViewController = segue.destinationViewController as! DashbordTableViewController
+            let dashboard: UserDashbordVC = segue.destinationViewController as! UserDashbordVC
             dashboard.user = self.user
             
         default:
@@ -86,11 +84,9 @@ class LoginViewController: UIViewController {
                         self.user.animals[i].type = String(JSON[i]["type"]!!)
                         self.user.animals[i].managedBy = String(JSON[i]["managedBy"]!!)
                         self.user.animals[i].date = Int(String(JSON[i]["type"]!!))
-                        
-                        
-                        
-                        self.performSegueWithIdentifier("dashboard", sender: self)
+                       
                     }
+                     self.performSegueWithIdentifier("dashboard", sender: self)
                 }
             }
         }
@@ -126,7 +122,7 @@ class LoginViewController: UIViewController {
                 else{
                     
                 }
-                //self.user.username = self.usernameTextField!.text
+             
             }
         }
     }

@@ -10,13 +10,14 @@ import UIKit
 import Alamofire
 
 
-class DashbordTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate  {
+class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelegate  {
     var user = User()
     
     
     @IBOutlet weak var nameLable: UILabel!
     
     @IBOutlet weak var animalsTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         nameLable.text = String("\(user.fname) \(user.lname)")
@@ -40,9 +41,9 @@ class DashbordTableViewController: UIViewController, UITableViewDataSource, UITa
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func cancelToViewController(segue:UIStoryboardSegue) {
+    @IBAction func signOut(sender: AnyObject) {
     }
-    
+        
     @IBAction func savePlayerDetail(segue:UIStoryboardSegue) {
     }
     
@@ -51,11 +52,11 @@ class DashbordTableViewController: UIViewController, UITableViewDataSource, UITa
         switch segue.identifier!{
         case "addAnimal":
             
-            let addAnimalView: AddAnimalViewController = segue.destinationViewController as! AddAnimalViewController
+            let addAnimalView: AddAnimalVC = segue.destinationViewController as! AddAnimalVC
             addAnimalView.token = user.token
             
         case "weights":
-            let weighsView: WeightViewController = segue.destinationViewController as! WeightViewController
+            let weighsView: WeightsVC = segue.destinationViewController as! WeightsVC
             if let animalIndex = animalsTableView.indexPathForSelectedRow?.row {
                 weighsView.animal = self.user.animals[animalIndex]
                 weighsView.token = self.user.token
