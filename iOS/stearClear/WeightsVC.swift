@@ -53,9 +53,8 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Weight Cell", forIndexPath: indexPath)
-        let index = animal.weight.startIndex.advancedBy(indexPath.row)
-        cell.t = animal.weight[0]
-        cell.textLabel?.text = animal.weight[0]
+        cell.detailTextLabel?.text = String(animal.weight[indexPath.row].weight)
+        cell.textLabel?.text = String(animal.weight[indexPath.row].date)
         return cell
         
     }
@@ -89,7 +88,8 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                 
                 for i in 0..<JSON.count{
                     let weight = Int(String(JSON[i]["weight"]!!))
-                    self.animal.weight[weight!] = String(JSON[i]["date"]!!)
+                    let date = String(JSON[i]["date"]!!)
+                    self.animal.weight.append((weight!, date))
                 }
                 self.weightTableView.reloadData()
 
@@ -141,7 +141,8 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 
     @IBAction func AddNewWeight(sender: UIButton) {
-        self.animal.weight[Int(addNewWeightTextField.text!)!] = " today!"
+        let weight = Int(addNewWeightTextField.text!)!
+        self.animal.weight.append((weight, "today"))
         //self.weightTableView.reloadData()
         addWeighPost()
 

@@ -60,7 +60,6 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
             if let animalIndex = animalsTableView.indexPathForSelectedRow?.row {
                 weighsView.animal = self.user.animals[animalIndex]
                 weighsView.token = self.user.token
-                weighsView.animal.weight[100] = "today"
             }
         case "login": break
             
