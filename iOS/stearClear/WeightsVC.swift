@@ -99,14 +99,14 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
             if let JSON = response.result.value {
                 print(JSON)
                 self.animal.weight.removeAll()
-                self.animal.addWeights(JSON.count)
+                self.animal.addWeights(JSON["data"]!!.count)
                 
-                for i in 0..<JSON.count{
+                for i in 0..<JSON["data"]!!.count{
                     
-                    self.animal.weight[i]._id = String(JSON[i]["_id"]!!)
-                    self.animal.weight[i].weight = Float(String(JSON[i]["weight"]!!))
+                    self.animal.weight[i]._id = String(JSON["data"]!![i]["_id"]!!)
+                    self.animal.weight[i].weight = Float(String(JSON["data"]!![i]["weight"]!!))
                     
-                    self.animal.weight[i].date = String(JSON[i]["date"]!!)
+                    self.animal.weight[i].date = String(JSON["data"]!![i]["date"]!!)
                 }
                 self.weightTableView.reloadData()
                 

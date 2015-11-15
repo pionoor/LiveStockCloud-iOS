@@ -75,18 +75,21 @@ class LoginVC: UIViewController {
                     self.performSegueWithIdentifier("dashboard", sender: self)
                     
                     return }
-                self.user.addAnimal(JSON.count)
-                print(JSON[0])
-                dispatch_async(dispatch_get_main_queue()){
-                    for i in 0..<JSON.count{
-                        self.user.animals[i].name = String(JSON[i]["name"]!!)
-                        self.user.animals[i].breed = String(JSON[i]["breed"]!!)
-                        self.user.animals[i].type = String(JSON[i]["type"]!!)
-                        self.user.animals[i].managedBy = String(JSON[i]["managedBy"]!!)
-                        self.user.animals[i].date = Int(String(JSON[i]["type"]!!))
-                       
+                self.user.addAnimal(JSON["data"]!!.count)
+                print(JSON["data"]!![0])
+                if String(JSON["success"]!!) == "1"{
+                    
+                    
+                    for i in 0..<JSON["data"]!!.count{
+                        self.user.animals[i].name = String(JSON["data"]!![i]["name"]!!)
+                        self.user.animals[i].breed = String(JSON["data"]!![i]["breed"]!!)
+                        self.user.animals[i].type = String(JSON["data"]!![i]["type"]!!)
+                        self.user.animals[i].managedBy = String(JSON["data"]!![i]["managedBy"]!!)
+                        self.user.animals[i].date = Int(String(JSON["data"]!![i]["type"]!!))
+                        
                     }
-                     self.performSegueWithIdentifier("dashboard", sender: self)
+                    self.performSegueWithIdentifier("dashboard", sender: self)
+                    
                 }
             }
         }
@@ -122,7 +125,7 @@ class LoginVC: UIViewController {
                 else{
                     
                 }
-             
+                
             }
         }
     }

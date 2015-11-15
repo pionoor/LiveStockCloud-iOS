@@ -243,7 +243,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="scaleToFill" image="F4BF31F0-6909-402E-90F9-EC830D701416" id="blo-y6-AId">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="scaleToFill" image="72B3E183-7196-4663-A5C7-FDD8DB34A537" id="blo-y6-AId">
                                                     <rect key="frame" x="15" y="0.0" width="56" height="56"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <animations/>
@@ -563,7 +563,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="F4BF31F0-6909-402E-90F9-EC830D701416" width="100" height="100">
+        <image name="72B3E183-7196-4663-A5C7-FDD8DB34A537" width="100" height="100">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
