@@ -13,6 +13,7 @@ import Alamofire
 class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelegate  {
     var user = User()
     
+    @IBOutlet weak var numAnimalsLabel: UILabel!
     
     @IBOutlet weak var nameLable: UILabel!
     
@@ -20,7 +21,7 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        nameLable.text = String("\(user.fname) \(user.lname)")
+       updateLabels()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -30,9 +31,15 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
         
     }
     
+    func updateLabels(){
+        nameLable.text = String("\(user.fname) \(user.lname)")
+        numAnimalsLabel.text = "You have \(user.animals.count) animals"
+    }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         syncUserData()
+        updateLabels()
+
 
     }
     
@@ -41,11 +48,7 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func signOut(sender: AnyObject) {
-    }
-        
-    @IBAction func savePlayerDetail(segue:UIStoryboardSegue) {
-    }
+  
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -59,7 +62,8 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
             let weighsView: WeightsVC = segue.destinationViewController as! WeightsVC
             if let animalIndex = animalsTableView.indexPathForSelectedRow?.row {
                 weighsView.animal = self.user.animals[animalIndex]
-                weighsView.token = self.user.token
+                weighsView.user = self.user
+
             }
         case "login": break
             
@@ -119,9 +123,9 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
                         self.user.animals[i].type = String(JSON[i]["type"]!!)
                         self.user.animals[i].managedBy = String(JSON[i]["managedBy"]!!)
                         self.user.animals[i].date = Int(String(JSON[i]["type"]!!))
-                        self.animalsTableView.reloadData()
 
                     }
+                    self.animalsTableView.reloadData()
                 }
             }
         }
