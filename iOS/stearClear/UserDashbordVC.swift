@@ -115,7 +115,6 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
 
                 self.user.animals.removeAll()
                 self.user.addAnimal(JSON.count)
-                print(JSON[0])
                 dispatch_async(dispatch_get_main_queue()){
                     for i in 0..<JSON.count{
                         self.user.animals[i].name = String(JSON[i]["name"]!!)

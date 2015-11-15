@@ -15,7 +15,7 @@ class Animal {
     var type: String!
     var breed: String!
     var date: Int!
-    var weight: [(weight: Int, date: String)]!
+    var weight: [Weight]!
     
     init() {
         id = String()
@@ -24,7 +24,14 @@ class Animal {
         type = String()
         breed = String()
         date = Int()
-        weight = [(weight: Int, date: String)]()
+        weight = [Weight]()
+    }
+    
+    
+    func addWeights(num: Int){
+        for _ in 0..<num {
+            weight.append(Weight())
+        }
     }
     
 }

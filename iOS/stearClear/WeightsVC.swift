@@ -98,11 +98,15 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
             
             if let JSON = response.result.value {
                 print(JSON)
+                self.animal.weight.removeAll()
+                self.animal.addWeights(JSON.count)
                 
                 for i in 0..<JSON.count{
-                    let weight = Int(String(JSON[i]["weight"]!!))
-                    let date = String(JSON[i]["date"]!!)
-                    self.animal.weight.append((weight!, date))
+                    
+                    self.animal.weight[i]._id = String(JSON[i]["_id"]!!)
+                    self.animal.weight[i].weight = Float(String(JSON[i]["weight"]!!))
+                    
+                    self.animal.weight[i].date = String(JSON[i]["date"]!!)
                 }
                 self.weightTableView.reloadData()
                 
@@ -154,8 +158,17 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     @IBAction func AddNewWeight(sender: UIButton) {
-        let weight = Int(addNewWeightTextField.text!)!
-        self.animal.weight.append((weight, "today"))
+        var date: String {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "MM-dd-yyyy"
+            return dateFormatter.stringFromDate(NSDate())
+        }
+        
+        let weight = Float(addNewWeightTextField.text!)!
+        self.animal.weight.insert(<#T##newElement: Element##Element#>, atIndex: 0)
+        self.animal.weight.last?.weight = weight
+        
+        self.animal.weight.last?.date = date
         //self.weightTableView.reloadData()
         addWeighPost()
         
@@ -164,5 +177,5 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     
-   
+    
 }
