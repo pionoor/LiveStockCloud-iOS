@@ -56,6 +56,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
             animal.weight.removeAtIndex(indexPath.row)
+            delWeight()
             weightTableView.reloadData()
         }
     }
@@ -125,6 +126,35 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
             }
         }
     }
+    func delWeight(index: Int){
+        
+        let parameters = [
+            "token":"\(user.token)",
+          
+        ]
+        addNewWeightTextField.text = ""
+        
+        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weight/\(animal.weight._id)"
+        
+        Alamofire.request(.DELETE, url, parameters: parameters) .responseJSON { response in
+            print(response.result)   // result of response serialization
+            
+            if let JSON = response.result.value {
+                print(JSON)
+                if String(JSON["success"]!!) == "1"{
+                    self.weightTableView.reloadData()
+                    
+                }
+                else if String(JSON["success"]!!) == "0" {
+                    self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")
+                    return
+                }
+                else{
+                    
+                }
+            }
+        }
+    
     
     func addWeighPost(){
         
@@ -144,7 +174,6 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                 print(JSON)
                 if String(JSON["success"]!!) == "1"{
                     self.weightTableView.reloadData()
-                    
                 }
                 else if String(JSON["success"]!!) == "0" {
                     self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")
