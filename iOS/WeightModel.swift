@@ -18,6 +18,10 @@ class Weight  {
         weight = Float()
         date = String()
     }
-
+    
+    init(weight: Float, date: String){
+        self.weight = weight
+        self.date = date
+    }
 
 }

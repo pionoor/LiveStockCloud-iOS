@@ -165,7 +165,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
         
         let weight = Float(addNewWeightTextField.text!)!
-        self.animal.weight.insert(<#T##newElement: Element##Element#>, atIndex: 0)
+        self.animal.weight.insert(Weight(weight: weight, date: date), atIndex: 0)
         self.animal.weight.last?.weight = weight
         
         self.animal.weight.last?.date = date
