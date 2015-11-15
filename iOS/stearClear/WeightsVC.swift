@@ -176,7 +176,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                 if let JSON = response.result.value {
                     print(JSON)
                     if String(JSON["success"]!!) == "1"{
-                        self.animal.weight[0]._id = String(JSON["_id"]!!)
+                        self.animal.weight[0]._id = String(JSON["data"]!!)
                         self.weightTableView.reloadData()
                     }
                     else if String(JSON["success"]!!) == "0" {
