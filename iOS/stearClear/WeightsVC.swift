@@ -55,8 +55,9 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
-            animal.weight.removeAtIndex(indexPath.row)
             delWeight(indexPath.row)
+            animal.weight.removeAtIndex(indexPath.row)
+
         }
     }
     
@@ -175,6 +176,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                 if let JSON = response.result.value {
                     print(JSON)
                     if String(JSON["success"]!!) == "1"{
+                        self.animal.weight[0]._id = String(JSON["_id"]!!)
                         self.weightTableView.reloadData()
                     }
                     else if String(JSON["success"]!!) == "0" {
