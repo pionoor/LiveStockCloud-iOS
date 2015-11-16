@@ -77,6 +77,7 @@ class LoginVC: UIViewController {
                     return }
                 self.user.addAnimal(JSON["data"]!!.count)
                 print(JSON["data"]!![0])
+                
                 if String(JSON["success"]!!) == "1"{
                     
                     
@@ -90,7 +91,8 @@ class LoginVC: UIViewController {
                     }
                     self.performSegueWithIdentifier("dashboard", sender: self)
                     
-                }
+                } else {
+                    self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")                }
             }
         }
     }
