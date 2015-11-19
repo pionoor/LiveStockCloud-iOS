@@ -41,6 +41,7 @@ class LoginVC: UIViewController {
             //dashboard.user = user
             
         case "dashboard":
+            
             if (usernameTextField!.text == ""){
                
                  self.view.makeToast(message: "Please Type a username", duration: 1.0, position: "center")
@@ -83,9 +84,7 @@ class LoginVC: UIViewController {
     }
     
     @IBAction func signUp(sender: AnyObject) {
-        self.performSegueWithIdentifier("dashboard", sender: self)
-        
-        
+        self.performSegueWithIdentifier("signUp", sender: self)
     }
     
     func syncUserData(){
@@ -97,12 +96,15 @@ class LoginVC: UIViewController {
             print(response.result)   // result of response serialization
             
             if let JSON = response.result.value {
-                if JSON.count == 0 {
+                if JSON["data"]!!.count == 0 {
                     self.performSegueWithIdentifier("dashboard", sender: self)
                     
                     return }
+                
+                print(JSON)
+
                 self.user.addAnimal(JSON["data"]!!.count)
-                print(JSON["data"]!![0])
+                print(JSON)
                 
                 if String(JSON["success"]!!) == "1"{
                     
