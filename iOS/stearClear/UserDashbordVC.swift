@@ -118,6 +118,7 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
                 
                 dispatch_async(dispatch_get_main_queue()){
                     for i in 0..<JSON["data"]!!.count{
+                        self.user.animals[i].id = String(JSON["data"]!![i]["_id"]!!)
                         self.user.animals[i].name = String(JSON["data"]!![i]["name"]!!)
                         self.user.animals[i].breed = String(JSON["data"]!![i]["breed"]!!)
                         self.user.animals[i].type = String(JSON["data"]!![i]["type"]!!)

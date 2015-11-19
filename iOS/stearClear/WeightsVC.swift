@@ -168,7 +168,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
             ]
             addNewWeightTextField.text = ""
             
-            let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.name)"
+            let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.id)"
             
             Alamofire.request(.POST, url, parameters: parameters) .responseJSON { response in
                 print(response.result)   // result of response serialization
