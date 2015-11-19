@@ -11,11 +11,11 @@ import UIKit
 
 class LoginVC: UIViewController {
     
-    @IBOutlet weak var newUserbutton = UIButton()
-    @IBOutlet weak var usernameTextField = UITextField()
-    @IBOutlet weak var passwordTextField = UITextField()
+    @IBOutlet weak var newUserbutton: UIButton!
+    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     
-    @IBOutlet weak var singInButton = UIButton()
+    @IBOutlet weak var singInButton: UIButton!
     
     var user: User = User()
     
@@ -32,7 +32,32 @@ class LoginVC: UIViewController {
     }
     
     
-    
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        switch identifier{
+            
+        case "signUp":
+            break
+            //let signUp: RegistrationVC = segue.destinationViewController as! RegistrationVC
+            //dashboard.user = user
+            
+        case "dashboard":
+            if (usernameTextField!.text == ""){
+               
+                 self.view.makeToast(message: "Please Type a username", duration: 1.0, position: "center")
+                return false
+            }
+            
+            if (passwordTextField!.text == ""){
+                
+                self.view.makeToast(message: "Please Type a password", duration: 1.0, position: "center")
+                return false
+            }
+            
+        default:
+            break
+        }
+        return true
+    }
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -58,6 +83,7 @@ class LoginVC: UIViewController {
     }
     
     @IBAction func signUp(sender: AnyObject) {
+        self.performSegueWithIdentifier("dashboard", sender: self)
         
         
     }
@@ -99,6 +125,18 @@ class LoginVC: UIViewController {
     
     
     func authenticate(){
+        
+        if (usernameTextField!.text == ""){
+            
+            self.view.makeToast(message: "Please Type a username", duration: 1.0, position: "center")
+            return
+        }
+        
+        if (passwordTextField!.text == ""){
+            
+            self.view.makeToast(message: "Please Type a password", duration: 1.0, position: "center")
+            return
+        }
         
         let parameters = [
             "username":"\(usernameTextField!.text!)",

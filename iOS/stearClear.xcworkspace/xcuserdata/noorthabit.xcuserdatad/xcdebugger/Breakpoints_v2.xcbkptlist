@@ -856,11 +856,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "stearClear/LoginVC.swift"
-            timestampString = "469317257.825922"
+            timestampString = "469640085.67399"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
             landmarkName = "syncUserData()"
             landmarkType = "5">
          </BreakpointContent>
@@ -872,11 +872,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "stearClear/LoginVC.swift"
-            timestampString = "469318934.46003"
+            timestampString = "469640085.67399"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
             landmarkName = "syncUserData()"
             landmarkType = "5">
          </BreakpointContent>
@@ -888,11 +888,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "stearClear/LoginVC.swift"
-            timestampString = "469320293.887322"
+            timestampString = "469640085.67399"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
             landmarkName = "syncUserData()"
             landmarkType = "5">
          </BreakpointContent>

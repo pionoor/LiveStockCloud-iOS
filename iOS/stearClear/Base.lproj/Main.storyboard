@@ -243,7 +243,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="scaleToFill" image="6B0C3238-6315-4E20-8163-02965B8546FC" id="blo-y6-AId">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="scaleToFill" image="4B76F0D7-810B-4D6B-B059-BFD9B8F57262" id="blo-y6-AId">
                                                     <rect key="frame" x="15" y="0.0" width="56" height="56"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <animations/>
@@ -273,7 +273,7 @@
                                 <rect key="frame" x="115" y="327" width="144" height="21"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="15"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -563,7 +563,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="6B0C3238-6315-4E20-8163-02965B8546FC" width="100" height="100">
+        <image name="4B76F0D7-810B-4D6B-B059-BFD9B8F57262" width="100" height="100">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -1305,6 +1305,6 @@ uKq7qsCqyKrLqt2q4KrlAAAAAAAAAgEAAAAAAAAAPgAAAAAAAAAAAAAAAAAAquc
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="zRE-Y8-Dvw"/>
-        <segue reference="A1T-lm-FQk"/>
+        <segue reference="00u-LR-csF"/>
     </inferredMetricsTieBreakers>
 </document>
