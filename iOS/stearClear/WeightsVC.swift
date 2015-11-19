@@ -55,9 +55,9 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
+            delWeight(indexPath.row)
             animal.weight.removeAtIndex(indexPath.row)
-            delWeight()
-            weightTableView.reloadData()
+
         }
     }
     
@@ -98,16 +98,16 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
             print(response.result)   // result of response serialization
             
             if let JSON = response.result.value {
-                print(JSON)
-                self.animal.weight.removeAll()
-                self.animal.addWeights(JSON.count)
                 
-                for i in 0..<JSON.count{
+                self.animal.weight.removeAll()
+                self.animal.addWeights(JSON["data"]!!.count)
+                
+                for i in 0..<JSON["data"]!!.count{
                     
-                    self.animal.weight[i]._id = String(JSON[i]["_id"]!!)
-                    self.animal.weight[i].weight = Float(String(JSON[i]["weight"]!!))
+                    self.animal.weight[i]._id = String(JSON["data"]!![i]["_id"]!!)
+                    self.animal.weight[i].weight = Float(String(JSON["data"]!![i]["weight"]!!))
                     
-                    self.animal.weight[i].date = String(JSON[i]["date"]!!)
+                    self.animal.weight[i].date = String(JSON["data"]!![i]["date"]!!)
                 }
                 self.weightTableView.reloadData()
                 
@@ -130,11 +130,11 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         let parameters = [
             "token":"\(user.token)",
-          
+            
         ]
         addNewWeightTextField.text = ""
         
-        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weight/\(animal.weight._id)"
+        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weight/\(animal.weight[index]._id)"
         
         Alamofire.request(.DELETE, url, parameters: parameters) .responseJSON { response in
             print(response.result)   // result of response serialization
@@ -142,8 +142,10 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
             if let JSON = response.result.value {
                 print(JSON)
                 if String(JSON["success"]!!) == "1"{
+                    dispatch_async(dispatch_get_main_queue()){
+                        self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")
                     self.weightTableView.reloadData()
-                    
+                    }
                 }
                 else if String(JSON["success"]!!) == "0" {
                     self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")
@@ -154,56 +156,58 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                 }
             }
         }
+    }
     
-    
-    func addWeighPost(){
         
-        let parameters = [
-            "token":"\(user.token)",
-            "weight":"\(addNewWeightTextField!.text!)",
-            "date":"10/10/2015"
-        ]
-        addNewWeightTextField.text = ""
-        
-        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.name)"
-        
-        Alamofire.request(.POST, url, parameters: parameters) .responseJSON { response in
-            print(response.result)   // result of response serialization
+        func addWeighPost(){
             
-            if let JSON = response.result.value {
-                print(JSON)
-                if String(JSON["success"]!!) == "1"{
-                    self.weightTableView.reloadData()
-                }
-                else if String(JSON["success"]!!) == "0" {
-                    self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")
-                    return
-                }
-                else{
-                    
+            let parameters = [
+                "token":"\(user.token)",
+                "weight":"\(addNewWeightTextField!.text!)",
+                "date":"10/10/2015"
+            ]
+            addNewWeightTextField.text = ""
+            
+            let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.name)"
+            
+            Alamofire.request(.POST, url, parameters: parameters) .responseJSON { response in
+                print(response.result)   // result of response serialization
+                
+                if let JSON = response.result.value {
+                    print(JSON)
+                    if String(JSON["success"]!!) == "1"{
+                        self.animal.weight[0]._id = String(JSON["data"]!!)
+                        self.weightTableView.reloadData()
+                    }
+                    else if String(JSON["success"]!!) == "0" {
+                        self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")
+                        return
+                    }
+                    else{
+                        
+                    }
                 }
             }
         }
-    }
-    
-    @IBAction func AddNewWeight(sender: UIButton) {
-        var date: String {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "MM-dd-yyyy"
-            return dateFormatter.stringFromDate(NSDate())
+        
+        @IBAction func AddNewWeight(sender: UIButton) {
+            var date: String {
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "MM-dd-yyyy"
+                return dateFormatter.stringFromDate(NSDate())
+            }
+            
+            let weight = Float(addNewWeightTextField.text!)!
+            self.animal.weight.insert(Weight(weight: weight, date: date), atIndex: 0)
+            self.animal.weight.last?.weight = weight
+            
+            self.animal.weight.last?.date = date
+            //self.weightTableView.reloadData()
+            addWeighPost()
+            
+            
         }
         
-        let weight = Float(addNewWeightTextField.text!)!
-        self.animal.weight.insert(Weight(weight: weight, date: date), atIndex: 0)
-        self.animal.weight.last?.weight = weight
-        
-        self.animal.weight.last?.date = date
-        //self.weightTableView.reloadData()
-        addWeighPost()
-        
-        
-    }
-    
     
     
     

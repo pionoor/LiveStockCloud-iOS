@@ -11,11 +11,11 @@ import UIKit
 
 class LoginVC: UIViewController {
     
-    @IBOutlet weak var newUserbutton = UIButton()
-    @IBOutlet weak var usernameTextField = UITextField()
-    @IBOutlet weak var passwordTextField = UITextField()
+    @IBOutlet weak var newUserbutton: UIButton!
+    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     
-    @IBOutlet weak var singInButton = UIButton()
+    @IBOutlet weak var singInButton: UIButton!
     
     var user: User = User()
     
@@ -32,7 +32,32 @@ class LoginVC: UIViewController {
     }
     
     
-    
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        switch identifier{
+            
+        case "signUp":
+            break
+            //let signUp: RegistrationVC = segue.destinationViewController as! RegistrationVC
+            //dashboard.user = user
+            
+        case "dashboard":
+            if (usernameTextField!.text == ""){
+               
+                 self.view.makeToast(message: "Please Type a username", duration: 1.0, position: "center")
+                return false
+            }
+            
+            if (passwordTextField!.text == ""){
+                
+                self.view.makeToast(message: "Please Type a password", duration: 1.0, position: "center")
+                return false
+            }
+            
+        default:
+            break
+        }
+        return true
+    }
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -58,6 +83,7 @@ class LoginVC: UIViewController {
     }
     
     @IBAction func signUp(sender: AnyObject) {
+        self.performSegueWithIdentifier("dashboard", sender: self)
         
         
     }
@@ -75,25 +101,42 @@ class LoginVC: UIViewController {
                     self.performSegueWithIdentifier("dashboard", sender: self)
                     
                     return }
-                self.user.addAnimal(JSON.count)
-                print(JSON[0])
-                dispatch_async(dispatch_get_main_queue()){
-                    for i in 0..<JSON.count{
-                        self.user.animals[i].name = String(JSON[i]["name"]!!)
-                        self.user.animals[i].breed = String(JSON[i]["breed"]!!)
-                        self.user.animals[i].type = String(JSON[i]["type"]!!)
-                        self.user.animals[i].managedBy = String(JSON[i]["managedBy"]!!)
-                        self.user.animals[i].date = Int(String(JSON[i]["type"]!!))
-                       
+                self.user.addAnimal(JSON["data"]!!.count)
+                print(JSON["data"]!![0])
+                
+                if String(JSON["success"]!!) == "1"{
+                    
+                    
+                    for i in 0..<JSON["data"]!!.count{
+                        self.user.animals[i].name = String(JSON["data"]!![i]["name"]!!)
+                        self.user.animals[i].breed = String(JSON["data"]!![i]["breed"]!!)
+                        self.user.animals[i].type = String(JSON["data"]!![i]["type"]!!)
+                        self.user.animals[i].managedBy = String(JSON["data"]!![i]["managedBy"]!!)
+                        self.user.animals[i].date = Int(String(JSON["data"]!![i]["type"]!!))
+                        
                     }
-                     self.performSegueWithIdentifier("dashboard", sender: self)
-                }
+                    self.performSegueWithIdentifier("dashboard", sender: self)
+                    
+                } else {
+                    self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")                }
             }
         }
     }
     
     
     func authenticate(){
+        
+        if (usernameTextField!.text == ""){
+            
+            self.view.makeToast(message: "Please Type a username", duration: 1.0, position: "center")
+            return
+        }
+        
+        if (passwordTextField!.text == ""){
+            
+            self.view.makeToast(message: "Please Type a password", duration: 1.0, position: "center")
+            return
+        }
         
         let parameters = [
             "username":"\(usernameTextField!.text!)",
@@ -122,7 +165,7 @@ class LoginVC: UIViewController {
                 else{
                     
                 }
-             
+                
             }
         }
     }
