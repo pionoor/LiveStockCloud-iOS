@@ -92,7 +92,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
             "token":"\(user.token)",
         ]
         
-        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.name)"
+        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.id)"
         
         Alamofire.request(.GET, url, parameters: parameters) .responseJSON { response in
             print(response.result)   // result of response serialization
@@ -107,7 +107,26 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                     self.animal.weight[i]._id = String(JSON["data"]!![i]["_id"]!!)
                     self.animal.weight[i].weight = Float(String(JSON["data"]!![i]["weight"]!!))
                     
-                    self.animal.weight[i].date = String(JSON["data"]!![i]["date"]!!)
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+                    // This is the input string.
+                    var date = String(JSON["data"]!![i]["date"]!!)
+                    
+
+                    let formattedDate = dateFormatter.dateFromString(date)
+                    
+
+ 
+                    let correctedDate = NSCalendar.currentCalendar().dateByAddingUnit(
+                        .Day,
+                        value: -1,
+                        toDate: formattedDate!,
+                        options: NSCalendarOptions(rawValue: 0))
+                    
+
+                    dateFormatter.dateFormat = "yyyy-MM-dd"
+                    self.animal.weight[i].date = String(dateFormatter.stringFromDate(correctedDate!))
+
                 }
                 self.weightTableView.reloadData()
                 
