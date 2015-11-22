@@ -147,22 +147,14 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                     let dateFormatter = NSDateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
                     // This is the input string.
-                    var date = String(JSON["data"]!![i]["date"]!!)
+                    let date = String(JSON["data"]!![i]["date"]!!)
                     
 
                     let formattedDate = dateFormatter.dateFromString(date)
                     
 
- 
-                    let correctedDate = NSCalendar.currentCalendar().dateByAddingUnit(
-                        .Day,
-                        value: -1,
-                        toDate: formattedDate!,
-                        options: NSCalendarOptions(rawValue: 0))
-                    
-
                     dateFormatter.dateFormat = "MM-dd-yyyy"
-                    self.animal.weight[i].date = String(dateFormatter.stringFromDate(correctedDate!))
+                    self.animal.weight[i].date = String(dateFormatter.stringFromDate(formattedDate!))
 
                 }
                 
@@ -216,13 +208,9 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                 let today = NSDate()
                 let dateFormatter = NSDateFormatter()
                 dateFormatter.dateFormat = "MM-dd-yyyy"
-                return dateFormatter.stringFromDate(NSCalendar.currentCalendar().dateByAddingUnit(
-                    .Day,
-                    value: 1,
-                    toDate: today,
-                    options: NSCalendarOptions(rawValue: 0))!)
+                return String(today)
             }
-
+            print(date)
             let parameters = [
                 "token":"\(user.token)",
                 "weight":"\(addNewWeightTextField!.text!)",
