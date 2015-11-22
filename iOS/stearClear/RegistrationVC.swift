@@ -53,6 +53,7 @@ class RegistrationVC: UIViewController {
             dispatch_get_main_queue(), closure)
     }
     
+    //TODO: - make toast
     func register(){
         let parameters = [
             "username":"\(usernameTextField!.text!)",
