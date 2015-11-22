@@ -32,7 +32,7 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func updateLabels(){
-        nameLable.text = String("\(user.fname) \(user.lname)")
+        nameLable.text = String("Hello, \(user.fname)")
         numAnimalsLabel.text = "You have \(user.animals.count) animals"
     }
     override func viewWillAppear(animated: Bool) {
