@@ -81,6 +81,7 @@ class LoginVC: UIViewController {
     
     @IBAction func signIn(sender: UIButton) {
         authenticate()
+
     }
     
     @IBAction func signUp(sender: AnyObject) {

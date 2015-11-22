@@ -243,7 +243,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="scaleToFill" image="E03937BC-ADA8-4398-9C85-5824756EAD87" id="blo-y6-AId">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.69999999999999996" contentMode="scaleToFill" image="09CFECDD-8406-4501-B43A-1E5145E75F0E" id="blo-y6-AId">
                                                     <rect key="frame" x="15" y="0.0" width="56" height="56"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <animations/>
@@ -608,7 +608,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="E03937BC-ADA8-4398-9C85-5824756EAD87" width="100" height="100">
+        <image name="09CFECDD-8406-4501-B43A-1E5145E75F0E" width="100" height="100">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -1284,7 +1284,7 @@ AAAAAAAAAAAAAAAAAA4BAAADAAAAAQBkAAABAQADAAAAAQBkAAABAgADAAAABAAAnPYBAwADAAAAAQAB
 AAABBgADAAAAAQACAAABEQAEAAAAAQAAAAgBEgADAAAAAQABAAABFQADAAAAAQAEAAABFgADAAAAAQBk
 AAABFwAEAAAAAQAAnEABHAADAAAAAQABAAABUgADAAAAAQACAAABUwADAAAABAAAnP6HcwAHAAAMSAAA
 nQYAAAAAAAgACAAIAAgAAQABAAEAAQAADEhMaW5vAhAAAG1udHJSR0IgWFlaIAfOAAIACQAGADEAAGFj
-c3BNU0ZUAAAAAElFQyBzUkdCAAAAAAAAAAAAAAABAAD21gABAAAAANMtSFAgIAAAAAAAAAAAAAAAAAAA
+c3BNU0ZUAAAAAElFQyBzUkdCAAAAAAAAAAAAAAAAAAD21gABAAAAANMtSFAgIAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEWNwcnQAAAFQAAAAM2Rlc2MAAAGEAAAAbHd0
 cHQAAAHwAAAAFGJrcHQAAAIEAAAAFHJYWVoAAAIYAAAAFGdYWVoAAAIsAAAAFGJYWVoAAAJAAAAAFGRt
 bmQAAAJUAAAAcGRtZGQAAALEAAAAiHZ1ZWQAAANMAAAAhnZpZXcAAAPUAAAAJGx1bWkAAAP4AAAAFG1l
@@ -1349,7 +1349,7 @@ uKq7qsCqyKrLqt2q4KrlAAAAAAAAAgEAAAAAAAAAPgAAAAAAAAAAAAAAAAAAquc
         <image name="cowface" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="A1T-lm-FQk"/>
+        <segue reference="00u-LR-csF"/>
         <segue reference="zRE-Y8-Dvw"/>
     </inferredMetricsTieBreakers>
 </document>

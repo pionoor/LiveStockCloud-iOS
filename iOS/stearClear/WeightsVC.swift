@@ -31,6 +31,8 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         //addNewWeightTextField = UITextField()
     }
+   
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
