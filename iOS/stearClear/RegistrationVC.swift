@@ -40,6 +40,7 @@ class RegistrationVC: UIViewController {
     }
     
     
+    
     @IBAction func registerButton(sender: UIButton) {
         register()
     }
@@ -52,6 +53,11 @@ class RegistrationVC: UIViewController {
             ),
             dispatch_get_main_queue(), closure)
     }
+    
+    
+    
+     
+    
     
     func register(){
         let parameters = [
