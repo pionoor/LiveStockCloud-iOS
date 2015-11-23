@@ -32,7 +32,7 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func updateLabels(){
-        nameLable.text = String("\(user.fname) \(user.lname)")
+        nameLable.text = String("Hello, \(user.fname)")
         numAnimalsLabel.text = "You have \(user.animals.count) animals"
     }
     override func viewWillAppear(animated: Bool) {
@@ -123,6 +123,7 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
                         self.user.animals[i].breed = String(JSON["data"]!![i]["breed"]!!)
                         self.user.animals[i].type = String(JSON["data"]!![i]["type"]!!)
                         self.user.animals[i].managedBy = String(JSON["data"]!![i]["managedBy"]!!)
+                        self.user.animals[i].id = String(JSON["data"]!![i]["_id"]!!)
                         self.user.animals[i].date = Int(String(JSON["data"]!![i]["type"]!!))                    }
                     self.animalsTableView.reloadData()
                 }

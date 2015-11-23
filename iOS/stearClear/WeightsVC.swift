@@ -6,6 +6,10 @@ import UIKit
 import Alamofire
 
 class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
+    var refreshControl = UIRefreshControl()
+
+    @IBOutlet weak var startDateTextField: UITextField!
+    
     var user = User()
     var animal: Animal = Animal()
     @IBOutlet weak var typeAnimalTextField: UILabel!
@@ -19,11 +23,16 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         super.viewDidLoad()
         updateTextFields()
         syncWeights()
+        self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.weightTableView?.addSubview(refreshControl)
         
         // Do any additional setup after loading the view.
         
         //addNewWeightTextField = UITextField()
     }
+   
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -31,6 +40,34 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     // MARK: - Table view data source
+    func refresh(sender:AnyObject) {
+        self.syncWeights()
+    }
+
+    
+    @IBAction func startDatePicker(sender: UITextField) {
+        
+        let datePickerView:UIDatePicker = UIDatePicker()
+        
+        datePickerView.datePickerMode = UIDatePickerMode.Date
+        
+        sender.inputView = datePickerView
+        
+        datePickerView.addTarget(self, action: Selector("datePickerValueChanged:"), forControlEvents: UIControlEvents.ValueChanged)
+    }
+    
+    
+    func datePickerValueChanged(sender:UIDatePicker) {
+        
+        let dateFormatter = NSDateFormatter()
+        
+        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+        
+        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
+        
+        startDateTextField.text = dateFormatter.stringFromDate(sender.date)
+        
+    }
     
     func updateTextFields(){
         animalNameTextField.text = animal.name
@@ -92,7 +129,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
             "token":"\(user.token)",
         ]
         
-        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.name)"
+        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.id)"
         
         Alamofire.request(.GET, url, parameters: parameters) .responseJSON { response in
             print(response.result)   // result of response serialization
@@ -107,22 +144,28 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                     self.animal.weight[i]._id = String(JSON["data"]!![i]["_id"]!!)
                     self.animal.weight[i].weight = Float(String(JSON["data"]!![i]["weight"]!!))
                     
-                    self.animal.weight[i].date = String(JSON["data"]!![i]["date"]!!)
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+                    // This is the input string.
+                    let date = String(JSON["data"]!![i]["date"]!!)
+                    
+
+                    let formattedDate = dateFormatter.dateFromString(date)
+                    
+
+                    dateFormatter.dateFormat = "MM-dd-yyyy"
+                    self.animal.weight[i].date = String(dateFormatter.stringFromDate(formattedDate!))
+
+                }
+                
+                if self.refreshControl.refreshing
+                {
+                    self.refreshControl.endRefreshing()
                 }
                 self.weightTableView.reloadData()
                 
                 
-                /*if String(JSON["success"]!!) == "1"{
-                self.weightTableView.reloadData()
-                
-                }
-                else if String(JSON["success"]!!) == "0" {
-                self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")
-                return
-                }
-                else{
-                
-                }*/
+              
             }
         }
     }
@@ -160,11 +203,18 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     
         
         func addWeighPost(){
-            
+
+            var date: String {
+                let today = NSDate()
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "MM-dd-yyyy"
+                return String(today)
+            }
+            print(date)
             let parameters = [
                 "token":"\(user.token)",
                 "weight":"\(addNewWeightTextField!.text!)",
-                "date":"10/10/2015"
+                "date": date
             ]
             addNewWeightTextField.text = ""
             
@@ -176,7 +226,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                 if let JSON = response.result.value {
                     print(JSON)
                     if String(JSON["success"]!!) == "1"{
-                        self.animal.weight[0]._id = String(JSON["data"]!!)
+                        self.animal.weight.last?._id = String(JSON["data"]!!)
                         self.weightTableView.reloadData()
                     }
                     else if String(JSON["success"]!!) == "0" {
@@ -196,13 +246,13 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                 dateFormatter.dateFormat = "MM-dd-yyyy"
                 return dateFormatter.stringFromDate(NSDate())
             }
-            
+            //self.view.makeToast(message: animal.id, duration: 1.0, position: "center")
             let weight = Float(addNewWeightTextField.text!)!
-            self.animal.weight.insert(Weight(weight: weight, date: date), atIndex: 0)
+            
+            self.animal.weight.append(Weight(weight: weight, date: date))
             self.animal.weight.last?.weight = weight
             
             self.animal.weight.last?.date = date
-            //self.weightTableView.reloadData()
             addWeighPost()
             
             
