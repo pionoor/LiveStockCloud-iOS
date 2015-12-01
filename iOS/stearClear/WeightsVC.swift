@@ -187,9 +187,12 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
             "token":"\(user.token)",
         ]
         
-        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.id)"
+        let route = url+"/api/weights/\(animal.id)"
+
         
-        Alamofire.request(.GET, url, parameters: parameters) .responseJSON { response in
+        print("ID: "+animal.id)
+        
+        Alamofire.request(.GET, route, parameters: parameters) .responseJSON { response in
             print(response.result)   // result of response serialization
             
             if let JSON = response.result.value {
@@ -235,9 +238,9 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         ]
         addNewWeightTextField.text = ""
         
-        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weight/\(animal.weight[index]._id)"
+        let route = url+"/api/weight/\(animal.weight[index]._id)"
         
-        Alamofire.request(.DELETE, url, parameters: parameters) .responseJSON { response in
+        Alamofire.request(.DELETE, route, parameters: parameters) .responseJSON { response in
             print(response.result)   // result of response serialization
             
             if let JSON = response.result.value {
@@ -276,9 +279,9 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
             ]
             addNewWeightTextField.text = ""
             
-            let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.id)"
+            let route = url+"/api/weights/\(animal.id)"
             
-            Alamofire.request(.POST, url, parameters: parameters) .responseJSON { response in
+            Alamofire.request(.POST, route, parameters: parameters) .responseJSON { response in
                 print(response.result)   // result of response serialization
                 
                 if let JSON = response.result.value {
@@ -305,14 +308,24 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                 return dateFormatter.stringFromDate(NSDate())
             }
             //self.view.makeToast(message: animal.id, duration: 1.0, position: "center")
+            
+            if ((addNewWeightTextField.text!).isEmpty) {
+                self.view.makeToast(message: String("Please enter a weight"), duration: 1.0, position: "center")
+
+            }
+            else if ((Int(addNewWeightTextField.text!)) == nil || (Float(addNewWeightTextField.text!)) == nil) {
+                self.view.makeToast(message: String("Weight must be a number"), duration: 1.0, position: "center")
+                
+            }
+            else{
             let weight = Float(addNewWeightTextField.text!)!
             
-            self.animal.weight.append(Weight(weight: weight, date: date))
-            self.animal.weight.last?.weight = weight
+                self.animal.weight.append(Weight(weight: weight, date: date))
+                self.animal.weight.last?.weight = weight
             
-            self.animal.weight.last?.date = date
-            addWeighPost()
-            
+                self.animal.weight.last?.date = date
+                addWeighPost()
+            }
             
         }
         
