@@ -9,6 +9,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     var refreshControl = UIRefreshControl()
 
     @IBOutlet weak var startDateTextField: UITextField!
+    var datePicker = UIDatePicker()
     
     var user = User()
     var animal: Animal = Animal()
@@ -34,6 +35,26 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
    
 
     
+    @IBAction func dateField(sender: UITextField) {
+        
+        var datePickerView  : UIDatePicker = UIDatePicker()
+        datePickerView.datePickerMode = UIDatePickerMode.Time
+        sender.inputView = datePickerView
+        datePickerView.addTarget(self, action: Selector("handleDatePicker:"), forControlEvents: UIControlEvents.ValueChanged)
+        
+    }
+    @IBAction func DoneButton(sender: UIButton) {
+        
+        dateField.resignFirstResponder()
+    }
+    
+    func handleDatePicker(sender: UIDatePicker) {
+        var timeFormatter = NSDateFormatter()
+        timeFormatter.dateStyle = .NoStyle
+        timeFormatter.timeStyle = .ShortStyle
+        startDateTextField.text = timeFormatter.stringFromDate(sender.date)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -44,31 +65,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.syncWeights()
     }
 
-    
-    @IBAction func startDatePicker(sender: UITextField) {
-        
-        let datePickerView:UIDatePicker = UIDatePicker()
-        
-        datePickerView.datePickerMode = UIDatePickerMode.Date
-        
-        sender.inputView = datePickerView
-        
-        datePickerView.addTarget(self, action: Selector("datePickerValueChanged:"), forControlEvents: UIControlEvents.ValueChanged)
-    }
-    
-    
-    func datePickerValueChanged(sender:UIDatePicker) {
-        
-        let dateFormatter = NSDateFormatter()
-        
-        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
-        
-        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-        
-        startDateTextField.text = dateFormatter.stringFromDate(sender.date)
-        
-    }
-    
+  
     func updateTextFields(){
         animalNameTextField.text = animal.name
         breedAnimalTextField.text = animal.breed
