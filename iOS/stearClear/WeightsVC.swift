@@ -11,6 +11,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var startDateTextField: UITextField!
     
     var user = User()
+    let url = "http://www.cowcloud.io"
     var animal: Animal = Animal()
     var selected: [UITableViewCell] = []
 
