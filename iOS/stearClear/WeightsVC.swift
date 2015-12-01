@@ -12,6 +12,8 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var user = User()
     var animal: Animal = Animal()
+    var selected: [UITableViewCell] = []
+
     @IBOutlet weak var typeAnimalTextField: UILabel!
     @IBOutlet weak var breedAnimalTextField: UILabel!
     @IBOutlet weak var animalNameTextField: UILabel!
@@ -26,6 +28,8 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.weightTableView?.addSubview(refreshControl)
+        
+        weightTableView.allowsMultipleSelection = true
         
         // Do any additional setup after loading the view.
         
@@ -69,6 +73,20 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         
     }
     
+    func rowSelected(row: UITableViewCell){
+        print("ENTERED ROW")
+        if (selected.count > 1){
+            print("ENTERED")
+            selected.removeFirst().accessoryType = UITableViewCellAccessoryType.None
+            selected.append(row)
+        }
+        else{
+            selected.append(row)
+        }
+        
+        print(selected)
+    }
+    
     func updateTextFields(){
         animalNameTextField.text = animal.name
         breedAnimalTextField.text = animal.breed
@@ -94,7 +112,6 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
             delWeight(indexPath.row)
             animal.weight.removeAtIndex(indexPath.row)
-
         }
     }
     
@@ -106,10 +123,42 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCellWithIdentifier("Weight Cell", forIndexPath: indexPath)
         cell.detailTextLabel?.text = String(animal.weight[indexPath.row].date )
         cell.textLabel?.text = String("\(animal.weight[indexPath.row].weight)lb")
+        
         return cell
         
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("# selected rows: \(tableView.indexPathsForSelectedRows?.count)")
+            if(tableView.indexPathsForSelectedRows?.count >= 2){
+                /*let firstCell = tableView.cellForRowAtIndexPath(tableView.indexPathsForSelectedRows![0])
+                let secondCell = tableView.cellForRowAtIndexPath(tableView.indexPathsForSelectedRows![1])
+                
+                print("WEIGHT: \(firstCell?.textLabel!.text)")
+               
+                let startWeightString = firstCell?.textLabel!.text
+                let endWeightString = secondCell?.textLabel!.text
+                let startWeight = startWeightString!.substringWithRange(Range<String.Index>(start: startWeightString!.startIndex, end: startWeightString!.endIndex.advancedBy(-2)))
+                let endWeight = endWeightString!.substringWithRange(Range<String.Index>(start: endWeightString!.startIndex, end: endWeightString!.endIndex.advancedBy(-2)))
+
+                let startWeightNum:Float? = Float(startWeight)
+                let endWeightNum:Float? = Float(endWeight)
+                
+                let startDate = firstCell?.detailTextLabel!.text
+                let endDate = secondCell?.detailTextLabel!.text
+                print("Start Weight: \(startWeight)")
+                calculateWeights((startWeightNum!, startDate!), endDate: (endWeightNum!, endDate!))*/
+                //print("Start Weight: \(endWeight)")
+                self.view.makeToast(message: "Calculated", duration: 1.0, position: "center")
+                for path in tableView.indexPathsForSelectedRows! {
+                    tableView.deselectRowAtIndexPath(path, animated: false)
+                }
+            }
+    }
+    
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -123,6 +172,15 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func calculateWeights(startDate:(weight: Float, date: String), endDate:(weight: Float, date: String)){
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        let firstDate = dateFormatter.dateFromString(endDate.date)
+        print(firstDate)
+        let secondDate = dateFormatter.dateFromString(startDate.date)
+        let numDays = dateFormatter.dateFromString(endDate.date)?.timeIntervalSinceDate(dateFormatter.dateFromString(startDate.date)!)
+        print("NUM DAYS \(numDays)")
+    }
     
     func syncWeights(){
         let parameters = [
