@@ -30,8 +30,17 @@ class LoginVC: UIViewController {
         let paddingPasswordTextField = UIView(frame: CGRectMake(0, 0, 15, self.passwordTextField!.frame.height))
         passwordTextField!.leftView = paddingPasswordTextField
         passwordTextField!.leftViewMode = UITextFieldViewMode.Always
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tap)
+
     }
     
+    //Calls this function when the tap is recognized.
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
     
     override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
         switch identifier{

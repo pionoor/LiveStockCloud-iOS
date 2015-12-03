@@ -24,6 +24,13 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet var weightTableView: UITableView! =  UITableView()
     
     override func viewDidLoad() {
+        
+        //Looks for single or multiple taps.
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tap)
+        
+        
+     
         super.viewDidLoad()
         updateTextFields()
         syncWeights()
@@ -39,7 +46,11 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
    
 
-    
+    //Calls this function when the tap is recognized.
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
     @IBAction func dateField(sender: UITextField) {
         
         var datePickerView  : UIDatePicker = UIDatePicker()
@@ -50,7 +61,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     @IBAction func DoneButton(sender: UIButton) {
         
-        dateField.resignFirstResponder()
+        //dateField.resignFirstResponder()
     }
     
     func handleDatePicker(sender: UIDatePicker) {
@@ -272,6 +283,7 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                     print(JSON)
                     if String(JSON["success"]!!) == "1"{
                         self.animal.weight.last?._id = String(JSON["data"]!!)
+                           self.view.makeToast(message: String(JSON["message"]!!), duration: 1.0, position: "center")
                         self.weightTableView.reloadData()
                     }
                     else if String(JSON["success"]!!) == "0" {
