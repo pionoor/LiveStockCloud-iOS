@@ -18,6 +18,7 @@ class LoginVC: UIViewController {
     @IBOutlet weak var singInButton: UIButton!
     
     var user: User = User()
+    let url = "http://www.cowcloud.io"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,8 +93,8 @@ class LoginVC: UIViewController {
         let parameters = [
             "token":"\(user.token)"
         ]
-        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/animals/\(user.username)"
-        Alamofire.request(.GET, url, parameters: parameters).responseJSON { response in
+        let route = url+"/api/animals/\(user.username)"
+        Alamofire.request(.GET, route, parameters: parameters).responseJSON { response in
             print(response.result)   // result of response serialization
             
             if let JSON = response.result.value {
@@ -146,9 +147,9 @@ class LoginVC: UIViewController {
             "password":"\(passwordTextField!.text!)"
         ]
         
-        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/authenticate"
+        let route = url+"/api/authenticate"
         
-        Alamofire.request(.POST, url, parameters: parameters) .responseJSON { response in
+        Alamofire.request(.POST, route, parameters: parameters) .responseJSON { response in
             print(response.result)   // result of response serialization
             
             if let JSON = response.result.value {

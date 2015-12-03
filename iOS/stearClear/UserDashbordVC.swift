@@ -19,6 +19,8 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @IBOutlet weak var animalsTableView: UITableView!
     
+    let url = "http://www.cowcloud.io"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
        updateLabels()
@@ -98,14 +100,17 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     
+    @IBAction func triggerBrowser(sender: UIButton) {
+        UIApplication.sharedApplication().openURL(NSURL(string: url)!)
+    }
     
     func syncUserData(){
         let parameters = [
             "token":"\(self.user.token)"
         ]
-        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/animals/\(user.username)"
+        let route = url+"/api/animals/\(user.username)"
         
-        Alamofire.request(.GET, url, parameters: parameters).responseJSON { response in
+        Alamofire.request(.GET, route, parameters: parameters).responseJSON { response in
             print(response.result)   // result of response serialization
             
             if let JSON = response.result.value {
@@ -118,6 +123,7 @@ class UserDashbordVC: UIViewController, UITableViewDataSource, UITableViewDelega
                 
                 dispatch_async(dispatch_get_main_queue()){
                     for i in 0..<JSON["data"]!!.count{
+                        self.user.animals[i].id = String(JSON["data"]!![i]["_id"]!!)
                         self.user.animals[i].name = String(JSON["data"]!![i]["name"]!!)
                         self.user.animals[i].breed = String(JSON["data"]!![i]["breed"]!!)
                         self.user.animals[i].type = String(JSON["data"]!![i]["type"]!!)

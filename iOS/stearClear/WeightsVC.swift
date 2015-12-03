@@ -12,7 +12,10 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
     var datePicker = UIDatePicker()
     
     var user = User()
+    let url = "http://www.cowcloud.io"
     var animal: Animal = Animal()
+    var selected: [UITableViewCell] = []
+
     @IBOutlet weak var typeAnimalTextField: UILabel!
     @IBOutlet weak var breedAnimalTextField: UILabel!
     @IBOutlet weak var animalNameTextField: UILabel!
@@ -27,6 +30,8 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         self.refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.weightTableView?.addSubview(refreshControl)
+        
+        weightTableView.allowsMultipleSelection = true
         
         // Do any additional setup after loading the view.
         
@@ -91,7 +96,6 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
             delWeight(indexPath.row)
             animal.weight.removeAtIndex(indexPath.row)
-
         }
     }
     
@@ -103,10 +107,42 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCellWithIdentifier("Weight Cell", forIndexPath: indexPath)
         cell.detailTextLabel?.text = String(animal.weight[indexPath.row].date )
         cell.textLabel?.text = String("\(animal.weight[indexPath.row].weight)lb")
+        
         return cell
         
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("# selected rows: \(tableView.indexPathsForSelectedRows?.count)")
+            if(tableView.indexPathsForSelectedRows?.count >= 2){
+                /*let firstCell = tableView.cellForRowAtIndexPath(tableView.indexPathsForSelectedRows![0])
+                let secondCell = tableView.cellForRowAtIndexPath(tableView.indexPathsForSelectedRows![1])
+                
+                print("WEIGHT: \(firstCell?.textLabel!.text)")
+               
+                let startWeightString = firstCell?.textLabel!.text
+                let endWeightString = secondCell?.textLabel!.text
+                let startWeight = startWeightString!.substringWithRange(Range<String.Index>(start: startWeightString!.startIndex, end: startWeightString!.endIndex.advancedBy(-2)))
+                let endWeight = endWeightString!.substringWithRange(Range<String.Index>(start: endWeightString!.startIndex, end: endWeightString!.endIndex.advancedBy(-2)))
+
+                let startWeightNum:Float? = Float(startWeight)
+                let endWeightNum:Float? = Float(endWeight)
+                
+                let startDate = firstCell?.detailTextLabel!.text
+                let endDate = secondCell?.detailTextLabel!.text
+                print("Start Weight: \(startWeight)")
+                calculateWeights((startWeightNum!, startDate!), endDate: (endWeightNum!, endDate!))*/
+                //print("Start Weight: \(endWeight)")
+                self.view.makeToast(message: "Calculated", duration: 1.0, position: "center")
+                for path in tableView.indexPathsForSelectedRows! {
+                    tableView.deselectRowAtIndexPath(path, animated: false)
+                }
+            }
+    }
+    
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -120,15 +156,27 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func calculateWeights(startDate:(weight: Float, date: String), endDate:(weight: Float, date: String)){
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        let firstDate = dateFormatter.dateFromString(endDate.date)
+        print(firstDate)
+        let secondDate = dateFormatter.dateFromString(startDate.date)
+        let numDays = dateFormatter.dateFromString(endDate.date)?.timeIntervalSinceDate(dateFormatter.dateFromString(startDate.date)!)
+        print("NUM DAYS \(numDays)")
+    }
     
     func syncWeights(){
         let parameters = [
             "token":"\(user.token)",
         ]
         
-        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.id)"
+        let route = url+"/api/weights/\(animal.id)"
+
         
-        Alamofire.request(.GET, url, parameters: parameters) .responseJSON { response in
+        print("ID: "+animal.id)
+        
+        Alamofire.request(.GET, route, parameters: parameters) .responseJSON { response in
             print(response.result)   // result of response serialization
             
             if let JSON = response.result.value {
@@ -144,22 +192,14 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                     let dateFormatter = NSDateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
                     // This is the input string.
-                    var date = String(JSON["data"]!![i]["date"]!!)
+                    let date = String(JSON["data"]!![i]["date"]!!)
                     
 
                     let formattedDate = dateFormatter.dateFromString(date)
                     
 
- 
-                    let correctedDate = NSCalendar.currentCalendar().dateByAddingUnit(
-                        .Day,
-                        value: -1,
-                        toDate: formattedDate!,
-                        options: NSCalendarOptions(rawValue: 0))
-                    
-
                     dateFormatter.dateFormat = "MM-dd-yyyy"
-                    self.animal.weight[i].date = String(dateFormatter.stringFromDate(correctedDate!))
+                    self.animal.weight[i].date = String(dateFormatter.stringFromDate(formattedDate!))
 
                 }
                 
@@ -182,9 +222,9 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
         ]
         addNewWeightTextField.text = ""
         
-        let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weight/\(animal.weight[index]._id)"
+        let route = url+"/api/weight/\(animal.weight[index]._id)"
         
-        Alamofire.request(.DELETE, url, parameters: parameters) .responseJSON { response in
+        Alamofire.request(.DELETE, route, parameters: parameters) .responseJSON { response in
             print(response.result)   // result of response serialization
             
             if let JSON = response.result.value {
@@ -213,13 +253,9 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                 let today = NSDate()
                 let dateFormatter = NSDateFormatter()
                 dateFormatter.dateFormat = "MM-dd-yyyy"
-                return dateFormatter.stringFromDate(NSCalendar.currentCalendar().dateByAddingUnit(
-                    .Day,
-                    value: 1,
-                    toDate: today,
-                    options: NSCalendarOptions(rawValue: 0))!)
+                return String(today)
             }
-
+            print(date)
             let parameters = [
                 "token":"\(user.token)",
                 "weight":"\(addNewWeightTextField!.text!)",
@@ -227,9 +263,9 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
             ]
             addNewWeightTextField.text = ""
             
-            let url = "http://ec2-52-88-233-238.us-west-2.compute.amazonaws.com:8080/api/weights/\(animal.id)"
+            let route = url+"/api/weights/\(animal.id)"
             
-            Alamofire.request(.POST, url, parameters: parameters) .responseJSON { response in
+            Alamofire.request(.POST, route, parameters: parameters) .responseJSON { response in
                 print(response.result)   // result of response serialization
                 
                 if let JSON = response.result.value {
@@ -256,14 +292,24 @@ class WeightsVC:  UIViewController, UITableViewDataSource, UITableViewDelegate {
                 return dateFormatter.stringFromDate(NSDate())
             }
             //self.view.makeToast(message: animal.id, duration: 1.0, position: "center")
+            
+            if ((addNewWeightTextField.text!).isEmpty) {
+                self.view.makeToast(message: String("Please enter a weight"), duration: 1.0, position: "center")
+
+            }
+            else if ((Int(addNewWeightTextField.text!)) == nil || (Float(addNewWeightTextField.text!)) == nil) {
+                self.view.makeToast(message: String("Weight must be a number"), duration: 1.0, position: "center")
+                
+            }
+            else{
             let weight = Float(addNewWeightTextField.text!)!
             
-            self.animal.weight.append(Weight(weight: weight, date: date))
-            self.animal.weight.last?.weight = weight
+                self.animal.weight.append(Weight(weight: weight, date: date))
+                self.animal.weight.last?.weight = weight
             
-            self.animal.weight.last?.date = date
-            addWeighPost()
-            
+                self.animal.weight.last?.date = date
+                addWeighPost()
+            }
             
         }
         
